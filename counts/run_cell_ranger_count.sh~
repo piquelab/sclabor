@@ -1,0 +1,45 @@
+#!/bin/bash
+
+set -v
+set -e 
+
+echo $PWD
+
+module load bcl2fastq/2.18
+module load cellranger
+
+## Can use this one as an argument. 
+##fastqfolder=../../fastq/
+fastqfolder=../fastq/
+
+transcriptome=/nfs/rprdata/refGenome10x/refdata-cellranger-hg19-1.2.0/
+
+samplefile=$fastqfolder/outs/input_samplesheet.csv
+
+find ${fastqfolder} -name '*fastq.gz' | sed 's/.*\///;s/_S1.*//' | sort | uniq > libList.txt
+
+
+##cat $samplefile | cut -d, -f2 | grep -v Sample | sort | uniq |\
+##find ${fastqfolder} -name 'CC7*fastq.gz' | sed 's/.*CC7/CC7/;s/_S.*.fastq.gz//' | sort | uniq |\
+cat libList.txt | grep -v s[1-5] | \
+while read sample; 
+do 
+##    fastqs=`find ${fastqfolder} -name "${sample}*fastq.gz" | sed 's/\/s[^\/]*//' | sort | uniq`
+##    fastqlist=`echo ${fastqs} | tr ' ' ,`
+    echo "#################"
+    echo $sample 
+    echo $fastqlist
+    echo "cd $PWD; module load bcl2fastq cellranger; 
+time cellranger count \
+      --id=$sample \
+      --fastqs=$fastqfolder \
+      --sample=$sample \
+      --transcriptome=$transcriptome \
+      --localcores=28 --localmem=120" | qsub -q erprq -l nodes=1:ppn=28 -l mem=120g -N $sample
+    sleep 0.5;
+done
+
+
+
+## --jobmode=erprq
+## qsub -I -q erprq -l nodes=1:ppn=28 -l mem=120g

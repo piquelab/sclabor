@@ -1,0 +1,12 @@
+Compares by condition (TL v PL, TL v TN) for each cluster (where there are at least 100 cells/cluster in each condition)
+
+DESeq2 model:~ Group
+
+output: makesummary.sh in output folder makes files:
+outputs_DESeq_ConditionsByCluster_3Comps/TIL_v_PTL-all.txt
+outputs_DESeq_ConditionsByCluster_3Comps/TNL_v_TIL-all.txt
+outputs_DESeq_ConditionsByCluster_3Comps/TIL_v_PTL-summary.txt
+outputs_DESeq_ConditionsByCluster_3Comps/TNL_v_TIL-summary.txt
+
+summary files contain only DE genes with padj<0.1
+all.txt files contain ALL DE genes

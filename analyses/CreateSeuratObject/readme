@@ -1,0 +1,8 @@
+This directory contains R script pipeline creating Seurat object and analyses.
+/output1 directory contains outputs.  (Subsequently used in other analyses)
+
+1) mergeALL_ED.R  [output- 80K-all.rds]
+2)   runSeurat_ED2.R  [output - novogene_scaled_2018-06-05.rds"]
+3)  runSeuratPCA_ED3.R [output- NovoGene_R3__seurat_genes_Res0.72018-06-05.rds]
+4) PlotNovogene_UMAP1.R [ generates/uses scilabObject-UMAP.Rdata]
+
